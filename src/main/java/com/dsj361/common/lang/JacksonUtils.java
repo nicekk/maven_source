@@ -1,4 +1,4 @@
-package com.dsj361.common.utils;
+package com.dsj361.common.lang;
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.databind.JsonNode;

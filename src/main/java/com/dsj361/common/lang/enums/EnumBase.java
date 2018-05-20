@@ -1,4 +1,4 @@
-package com.dsj361.common.enums;
+package com.dsj361.common.lang.enums;
 
 /**
  * 枚举接口

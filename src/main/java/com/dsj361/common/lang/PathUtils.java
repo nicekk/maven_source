@@ -1,4 +1,4 @@
-package com.dsj361.common.utils;
+package com.dsj361.common.lang;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;

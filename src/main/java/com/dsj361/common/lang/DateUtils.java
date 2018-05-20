@@ -1,4 +1,4 @@
-package com.dsj361.common.utils;
+package com.dsj361.common.lang;
 
 import java.text.DateFormat;
 import java.text.ParseException;

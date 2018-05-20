@@ -1,4 +1,4 @@
-package com.dsj361.common.utils;
+package com.dsj361.common.lang;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 

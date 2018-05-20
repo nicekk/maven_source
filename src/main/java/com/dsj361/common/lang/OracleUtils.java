@@ -1,4 +1,4 @@
-package com.dsj361.common.utils;
+package com.dsj361.common.lang;
 
 import oracle.sql.TIMESTAMP;
 import org.apache.log4j.Logger;
