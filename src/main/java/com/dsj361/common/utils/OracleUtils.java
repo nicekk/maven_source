@@ -1,8 +1,7 @@
 package com.dsj361.common.utils;
 
 import oracle.sql.TIMESTAMP;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import java.util.Date;
 
@@ -12,7 +11,7 @@ import java.util.Date;
  */
 public class OracleUtils {
 
-    public static final Logger log = LoggerFactory.getLogger(OracleUtils.class);
+    public static final Logger log = Logger.getLogger(OracleUtils.class);
 
     public static Date toDate(TIMESTAMP timestamp) {
         try {
