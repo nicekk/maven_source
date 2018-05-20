@@ -724,4 +724,61 @@ public class StringUtils {
         return str1.equals(str2);
     }
 
+    /**
+     * 检查字符串中是否包含指定的字符串。如果字符串为<code>null</code>，将返回<code>false</code>。
+     *
+     * <pre>
+     * StringUtil.contains(null, *)     = false
+     * StringUtil.contains(*, null)     = false
+     * StringUtil.contains(&quot;&quot;, &quot;&quot;)      = true
+     * StringUtil.contains(&quot;abc&quot;, &quot;&quot;)   = true
+     * StringUtil.contains(&quot;abc&quot;, &quot;a&quot;)  = true
+     * StringUtil.contains(&quot;abc&quot;, &quot;z&quot;)  = false
+     * </pre>
+     *
+     * @param str
+     *            要扫描的字符串
+     * @param searchStr
+     *            要查找的字符串
+     *
+     * @return 如果找到，则返回<code>true</code>
+     */
+    public static boolean contains(String str, String searchStr) {
+        if ((str == null) || (searchStr == null)) {
+            return false;
+        }
+
+        return str.indexOf(searchStr) >= 0;
+    }
+
+    /**
+     * 比较两个字符串（大小写不敏感）。
+     *
+     * <pre>
+     * StringUtil.equalsIgnoreCase(null, null)   = true
+     * StringUtil.equalsIgnoreCase(null, &quot;abc&quot;)  = false
+     * StringUtil.equalsIgnoreCase(&quot;abc&quot;, null)  = false
+     * StringUtil.equalsIgnoreCase(&quot;abc&quot;, &quot;abc&quot;) = true
+     * StringUtil.equalsIgnoreCase(&quot;abc&quot;, &quot;ABC&quot;) = true
+     * </pre>
+     *
+     * @param str1
+     *            要比较的字符串1
+     * @param str2
+     *            要比较的字符串2
+     *
+     * @return 如果两个字符串相同，或者都是<code>null</code>，则返回<code>true</code>
+     */
+    public static boolean equalsIgnoreCase(String str1, String str2) {
+        if (str1 == null) {
+            return str2 == null;
+        }
+
+        return str1.equalsIgnoreCase(str2);
+    }
+
+    public static boolean notEqualsIgnoreCase(String str1, String str2) {
+        return !equalsIgnoreCase(str1, str2);
+    }
+
 }

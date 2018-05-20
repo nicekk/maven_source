@@ -22,4 +22,18 @@ public class NumberUtils {
         flag = bd.doubleValue();
         return flag;
     }
+
+    public static int toInt(Object obj) {
+        return toInt(obj, 0);
+    }
+
+    public static int toInt(Object obj, int defaultValue) {
+        if (obj == null) {
+            return defaultValue;
+        }
+        if (obj instanceof Number) {
+            return ((Number) obj).intValue();
+        }
+        return toInt(ObjectUtils.toString(obj), defaultValue);
+    }
 }
