@@ -2,7 +2,7 @@ package com.dsj361.common.lang;
 
 import java.math.BigDecimal;
 
-public class NumberUtils {
+public class NumberUtils extends org.apache.commons.lang.math.NumberUtils {
 
     /**
      * 小数点保留，数字a保留scale位，直接舍去<br>
@@ -36,4 +36,5 @@ public class NumberUtils {
         }
         return toInt(ObjectUtils.toString(obj), defaultValue);
     }
+
 }
