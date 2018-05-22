@@ -781,4 +781,17 @@ public class StringUtils {
         return !equalsIgnoreCase(str1, str2);
     }
 
+    /**
+     * 移除字符串
+     *
+     * @param str
+     * @return
+     */
+    public static String removeNumbers(String str) {
+        if (isEmpty(str)) {
+            return str;
+        }
+        return str.replaceAll("\\d+", "");
+    }
+
 }
