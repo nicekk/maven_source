@@ -782,7 +782,7 @@ public class StringUtils {
     }
 
     /**
-     * 移除字符串
+     * 移除字符串中的数字
      *
      * @param str
      * @return
