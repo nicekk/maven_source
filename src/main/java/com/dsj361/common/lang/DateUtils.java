@@ -18,6 +18,7 @@ public class DateUtils {
     public static final String shortFormat = "yyyyMMdd";
     public final static String shortDateFormat = "MM-dd";
     public final static String yyyyMMddHH = "yyyyMMddHH";
+    public final static String webFormat = "yyyy-MM-dd";
 
     public static String getDateString(Date date, DateFormat dateFormat) {
         if (date == null || dateFormat == null) {
@@ -169,6 +170,12 @@ public class DateUtils {
             differHours += 1;
         }
         return differHours;
+    }
+
+    public static String getWebDateString(Date date) {
+        DateFormat dateFormat = getNewDateFormat(webFormat);
+
+        return getDateString(date, dateFormat);
     }
 
 }
