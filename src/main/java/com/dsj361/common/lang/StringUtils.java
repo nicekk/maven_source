@@ -1116,6 +1116,140 @@ public class StringUtils {
         return true;
     }
 
+    /*
+     * =========================================================================
+     * = ==
+     */
+    /* 字符串查找函数 —— 字符或字符串。 */
+    /*                                                                              */
+    /* 在字符串中查找指定字符或字符串。 */
+    /*
+     * =========================================================================
+     * = ==
+     */
+
+    /**
+     * 在字符串中查找指定字符，并返回第一个匹配的索引值。如果字符串为<code>null</code>或未找到，则返回<code>-1</code>。
+     *
+     * <pre>
+     * StringUtil.indexOf(null, *)         = -1
+     * StringUtil.indexOf(&quot;&quot;, *)           = -1
+     * StringUtil.indexOf(&quot;aabaabaa&quot;, 'a') = 0
+     * StringUtil.indexOf(&quot;aabaabaa&quot;, 'b') = 2
+     * </pre>
+     *
+     * @param str
+     *            要扫描的字符串
+     * @param searchChar
+     *            要查找的字符
+     *
+     * @return 第一个匹配的索引值。如果字符串为<code>null</code>或未找到，则返回<code>-1</code>
+     */
+    public static int indexOf(String str, char searchChar) {
+        if ((str == null) || (str.length() == 0)) {
+            return -1;
+        }
+
+        return str.indexOf(searchChar);
+    }
+
+    /**
+     * 在字符串中查找指定字符，并返回第一个匹配的索引值。如果字符串为<code>null</code>或未找到，则返回<code>-1</code>。
+     *
+     * <pre>
+     * StringUtil.indexOf(null, *, *)          = -1
+     * StringUtil.indexOf(&quot;&quot;, *, *)            = -1
+     * StringUtil.indexOf(&quot;aabaabaa&quot;, 'b', 0)  = 2
+     * StringUtil.indexOf(&quot;aabaabaa&quot;, 'b', 3)  = 5
+     * StringUtil.indexOf(&quot;aabaabaa&quot;, 'b', 9)  = -1
+     * StringUtil.indexOf(&quot;aabaabaa&quot;, 'b', -1) = 2
+     * </pre>
+     *
+     * @param str
+     *            要扫描的字符串
+     * @param searchChar
+     *            要查找的字符
+     * @param startPos
+     *            开始搜索的索引值，如果小于0，则看作0
+     *
+     * @return 第一个匹配的索引值。如果字符串为<code>null</code>或未找到，则返回<code>-1</code>
+     */
+    public static int indexOf(String str, char searchChar, int startPos) {
+        if ((str == null) || (str.length() == 0)) {
+            return -1;
+        }
+
+        return str.indexOf(searchChar, startPos);
+    }
+
+    /**
+     * 在字符串中查找指定字符串，并返回第一个匹配的索引值。如果字符串为<code>null</code>或未找到，则返回<code>-1</code>。
+     *
+     * <pre>
+     * StringUtil.indexOf(null, *)          = -1
+     * StringUtil.indexOf(*, null)          = -1
+     * StringUtil.indexOf(&quot;&quot;, &quot;&quot;)           = 0
+     * StringUtil.indexOf(&quot;aabaabaa&quot;, &quot;a&quot;)  = 0
+     * StringUtil.indexOf(&quot;aabaabaa&quot;, &quot;b&quot;)  = 2
+     * StringUtil.indexOf(&quot;aabaabaa&quot;, &quot;ab&quot;) = 1
+     * StringUtil.indexOf(&quot;aabaabaa&quot;, &quot;&quot;)   = 0
+     * </pre>
+     *
+     * @param str
+     *            要扫描的字符串
+     * @param searchStr
+     *            要查找的字符串
+     *
+     * @return 第一个匹配的索引值。如果字符串为<code>null</code>或未找到，则返回<code>-1</code>
+     */
+    public static int indexOf(String str, String searchStr) {
+        if ((str == null) || (searchStr == null)) {
+            return -1;
+        }
+
+        return str.indexOf(searchStr);
+    }
+
+    /**
+     * 在字符串中查找指定字符串，并返回第一个匹配的索引值。如果字符串为<code>null</code>或未找到，则返回<code>-1</code>。
+     *
+     * <pre>
+     * StringUtil.indexOf(null, *, *)          = -1
+     * StringUtil.indexOf(*, null, *)          = -1
+     * StringUtil.indexOf(&quot;&quot;, &quot;&quot;, 0)           = 0
+     * StringUtil.indexOf(&quot;aabaabaa&quot;, &quot;a&quot;, 0)  = 0
+     * StringUtil.indexOf(&quot;aabaabaa&quot;, &quot;b&quot;, 0)  = 2
+     * StringUtil.indexOf(&quot;aabaabaa&quot;, &quot;ab&quot;, 0) = 1
+     * StringUtil.indexOf(&quot;aabaabaa&quot;, &quot;b&quot;, 3)  = 5
+     * StringUtil.indexOf(&quot;aabaabaa&quot;, &quot;b&quot;, 9)  = -1
+     * StringUtil.indexOf(&quot;aabaabaa&quot;, &quot;b&quot;, -1) = 2
+     * StringUtil.indexOf(&quot;aabaabaa&quot;, &quot;&quot;, 2)   = 2
+     * StringUtil.indexOf(&quot;abc&quot;, &quot;&quot;, 9)        = 3
+     * </pre>
+     *
+     * @param str
+     *            要扫描的字符串
+     * @param searchStr
+     *            要查找的字符串
+     * @param startPos
+     *            开始搜索的索引值，如果小于0，则看作0
+     *
+     * @return 第一个匹配的索引值。如果字符串为<code>null</code>或未找到，则返回<code>-1</code>
+     */
+    public static int indexOf(String str, String searchStr, int startPos) {
+        if ((str == null) || (searchStr == null)) {
+            return -1;
+        }
+
+        // JDK1.3及以下版本的bug：不能正确处理下面的情况
+        if ((searchStr.length() == 0) && (startPos >= str.length())) {
+            return str.length();
+        }
+
+        return str.indexOf(searchStr, startPos);
+    }
+
+
 
 
 }

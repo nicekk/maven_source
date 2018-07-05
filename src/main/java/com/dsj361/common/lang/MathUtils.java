@@ -2,6 +2,7 @@ package com.dsj361.common.lang;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -241,5 +242,80 @@ public class MathUtils {
         }
         return (List<List<E>>) resultList;
     }
+
+    /**
+     * 小数点保留，数字a保留scale位，直接舍去<br>
+     *
+     * <pre>
+     * scaleRundDown(65.5856, 2) = 65.58
+     * </pre>
+     *
+     * @param a
+     * @param scale
+     * @return
+     */
+    public static double scaleRundDown(Number a, int scale) {
+        Double flag = null;
+        String text = a.toString();
+        BigDecimal bd = new BigDecimal(text).setScale(scale, BigDecimal.ROUND_DOWN);
+        flag = bd.doubleValue();
+        return flag;
+    }
+
+    /**
+     * 四舍六入5成双 <br>
+     * 保留小数点的后一位如果大于5则进1，小于5则舍去 等于5 则看前一位如果奇数 则进1，如果是偶数则舍去，如果5后面有，则无论奇偶都进位
+     *
+     * @param a
+     * @param scale
+     *            保留小数位
+     * @return
+     */
+    public static double scale4S6R5S(Number a, int scale) {
+        NumberFormat nfFormat = NumberFormat.getInstance();
+        nfFormat.setMaximumFractionDigits(scale);
+        return NumberUtils.toDouble(nfFormat.format(a).replaceAll(",", ""));
+    }
+
+    public static double scale4S6R5JE(double a, int scale) {
+        String str = MathUtils.scaleString(a, 4);
+        return scale4S6R5JEInner(a, scale, str);
+    }
+
+    /**
+     * 四舍六入5奇偶，保留小数点的后一位如果大于5则进1，小于5则舍去 等于5 则看前一位如果奇数 则进1，如果是偶数则舍去,即便5后面有数字，也不理
+     *
+     * @param a
+     * @param scale
+     * @return
+     */
+    public static double scale4S6R5JE(Number a, int scale) {
+        String str = MathUtils.scaleString(a, 4);
+        return scale4S6R5JEInner(a, scale, str);
+    }
+
+    private static double scale4S6R5JEInner(Number a, int scale, String str) {
+        int position = StringUtils.indexOf(str, ".");
+        if (position < 0 || position + scale + 1 >= str.length()) {
+            return a.doubleValue();
+        } else {
+            int lastInt = NumberUtils.toInt(str.substring(position + scale + 1, position + scale + 2));
+            if (lastInt <= 4) {
+                return NumberUtils.toDouble(str.substring(0, position + scale + 1));
+            } else if (lastInt == 5) {
+                // 偶数
+                if (NumberUtils.toInt(str.substring(position + scale, position + scale + 1)) % 2 == 0) {
+                    return NumberUtils.toDouble(str.substring(0, position + scale + 1));
+                }
+                // 奇数
+                else {
+                    return MathUtils.scale(NumberUtils.toDouble(str.substring(0, position + scale + 1)) + Math.pow(0.1, scale), scale);
+                }
+            } else {
+                return MathUtils.scale(NumberUtils.toDouble(str.substring(0, position + scale + 1)) + Math.pow(0.1, scale), scale);
+            }
+        }
+    }
+
 
 }
