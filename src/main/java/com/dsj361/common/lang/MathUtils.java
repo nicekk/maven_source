@@ -2,6 +2,8 @@ package com.dsj361.common.lang;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author wangkai
@@ -140,6 +142,104 @@ public class MathUtils {
      */
     public static String scaleString(BigDecimal bd, int scale) {
         return scaleString(bd, scale, true);
+    }
+
+    /**
+     * 取X个数据进行组合，每种组合个数为fixedSize个，总组合数不超过maxTotalAmount，返回这样的X值的最大值
+     *
+     * @param fixedSize
+     * @param maxTotalAmount
+     * @return
+     */
+    public static int getMaxToCombineElementCount(int fixedSize, int maxTotalAmount) {
+        if (maxTotalAmount == 0 || fixedSize == 0) {
+            return 0;
+        }
+        if (fixedSize == maxTotalAmount) {
+            return 1;
+        }
+        for (int i = 1; i < Integer.MAX_VALUE; i++) {
+            if (combineCount(i, fixedSize) > maxTotalAmount) {
+                return i - 1;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * 组合算法,计算个数
+     *
+     * @param totalSize
+     * @param pickSize
+     * @return
+     */
+    public static int combineCount(int totalSize, int pickSize) {
+
+        if (totalSize < 0 || pickSize < 0) {
+            return 0;
+        }
+        if (totalSize < pickSize) {
+            return 0;
+        }
+
+        if (totalSize == pickSize) {
+            return 1;
+        }
+        if (pickSize == 1) {
+            return totalSize;
+        }
+
+        int count = 1;
+        for (int i = 0; i < pickSize; i++) {
+            count *= (totalSize - i);
+        }
+        return NumberUtils.toInt(count / org.apache.commons.math3.util.CombinatoricsUtils.factorial(pickSize));
+    }
+
+    /**
+     * 将dataList中的数据分割,平均每个part份
+     *
+     * @param dataList
+     * @param
+     * @return
+     */
+    public static <E> List<List<E>> part(List<E> dataList, int part) {
+        if (dataList.size() == 0) {
+            return new ArrayList<List<E>>(0);
+        }
+        int count = dataList.size() / part;
+        if (count * part != dataList.size()) {
+            count = count + 1;
+        }
+        return average(dataList, count);
+    }
+
+    /**
+     * 将dataList中的数据，平均分成resultCount份，返回
+     *
+     * @param dataList
+     * @param resultCount
+     * @return
+     */
+    public static <E> List<List<E>> average(List<E> dataList, int resultCount) {
+        List<List<E>> resultList = new ArrayList<List<E>>();
+        int eachSize = dataList.size() / resultCount;
+        if ((eachSize * resultCount) / 2 < dataList.size() / 2) {
+            eachSize = eachSize + 1;
+        }
+        for (int i = 0; i < resultCount; i++) {
+            List<E> eachList = new ArrayList<E>();
+            resultList.add(eachList);
+            int endIndex = (i + 1) * eachSize;
+            endIndex = endIndex >= dataList.size() ? dataList.size() : endIndex;
+            if (i + 1 == resultCount) {
+                endIndex = dataList.size();
+            }
+            if (i * eachSize < dataList.size()) {
+                eachList.addAll(dataList.subList(i * eachSize, endIndex));
+            }
+        }
+        return (List<List<E>>) resultList;
     }
 
 }
