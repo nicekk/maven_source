@@ -209,6 +209,10 @@ public class StringUtils {
         return ((str == null) || (str.length() == 0));
     }
 
+    public static boolean isNotEmpty(String str) {
+        return !isEmpty(str);
+    }
+
     /**
      * 解析出下列语法所构成的<code>SENTENCE</code>。
      *
@@ -792,6 +796,50 @@ public class StringUtils {
             return str;
         }
         return str.replaceAll("\\d+", "");
+    }
+
+
+    public static final String FILL_TYPE_PREFIX = "prefix";
+
+    public static final String FILL_TYPE_SUFFIX = "suffix";
+
+
+    private static String fill(String value, String filler, String fillType, int length) {
+        StringBuffer buf = new StringBuffer(StringUtils.defaultIfEmpty(value));
+        while (buf.length() < length) {
+            if (fillType.equals(FILL_TYPE_PREFIX)) {
+                buf.insert(0, filler);
+            } else if (fillType.equals(FILL_TYPE_SUFFIX)) {
+                buf.append(filler);
+            } else {
+                throw new RuntimeException("无法识别的fillType：" + fillType);
+            }
+        }
+        return buf.toString();
+    }
+
+    /**
+     * 判断value长度是否为length，如果不是，则在前面填充filler，直至长度为length
+     *
+     * @param value
+     * @param filler
+     * @param length
+     * @return
+     */
+    public static String fillPrefix(String value, String filler, int length) {
+        return fill(value, filler, FILL_TYPE_PREFIX, length);
+    }
+
+    /**
+     * 判断value长度是否为length，如果不是，则在后面填充filler，直至长度为length
+     *
+     * @param value
+     * @param filler
+     * @param length
+     * @return
+     */
+    public static String fillSuffix(String value, String filler, int length) {
+        return fill(value, filler, FILL_TYPE_SUFFIX, length);
     }
 
 }
