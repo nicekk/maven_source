@@ -842,4 +842,280 @@ public class StringUtils {
         return fill(value, filler, FILL_TYPE_SUFFIX, length);
     }
 
+    public static boolean endsWith(String str, String suffix) {
+        return endsWith(str, suffix, false);
+    }
+
+    private static boolean endsWith(String str, String suffix, boolean ignoreCase) {
+        if (str == null || suffix == null) {
+            return (str == null && suffix == null);
+        }
+        if (suffix.length() > str.length()) {
+            return false;
+        }
+        int strOffset = str.length() - suffix.length();
+        return str.regionMatches(ignoreCase, strOffset, suffix, 0, suffix.length());
+    }
+
+    /*
+     * =========================================================================
+     * = ==
+     */
+    /* 取子串函数。 */
+    /*
+     * =========================================================================
+     * = ==
+     */
+
+    /**
+     * 取指定字符串的子串。
+     *
+     * <p>
+     * 负的索引代表从尾部开始计算。如果字符串为<code>null</code>，则返回<code>null</code>。
+     *
+     * <pre>
+     * StringUtil.substring(null, *)   = null
+     * StringUtil.substring(&quot;&quot;, *)     = &quot;&quot;
+     * StringUtil.substring(&quot;abc&quot;, 0)  = &quot;abc&quot;
+     * StringUtil.substring(&quot;abc&quot;, 2)  = &quot;c&quot;
+     * StringUtil.substring(&quot;abc&quot;, 4)  = &quot;&quot;
+     * StringUtil.substring(&quot;abc&quot;, -2) = &quot;bc&quot;
+     * StringUtil.substring(&quot;abc&quot;, -4) = &quot;abc&quot;
+     * </pre>
+     *
+     * </p>
+     *
+     * @param str
+     *            字符串
+     * @param start
+     *            起始索引，如果为负数，表示从尾部查找
+     *
+     * @return 子串，如果原始串为<code>null</code>，则返回<code>null</code>
+     */
+    public static String substring(String str, int start) {
+        if (str == null) {
+            return null;
+        }
+
+        if (start < 0) {
+            start = str.length() + start;
+        }
+
+        if (start < 0) {
+            start = 0;
+        }
+
+        if (start > str.length()) {
+            return EMPTY_STRING;
+        }
+
+        return str.substring(start);
+    }
+
+    /**
+     * 取指定字符串的子串。
+     *
+     * <p>
+     * 负的索引代表从尾部开始计算。如果字符串为<code>null</code>，则返回<code>null</code>。
+     *
+     * <pre>
+     * StringUtil.substring(null, *, *)    = null
+     * StringUtil.substring(&quot;&quot;, * ,  *)    = &quot;&quot;;
+     * StringUtil.substring(&quot;abc&quot;, 0, 2)   = &quot;ab&quot;
+     * StringUtil.substring(&quot;abc&quot;, 2, 0)   = &quot;&quot;
+     * StringUtil.substring(&quot;abc&quot;, 2, 4)   = &quot;c&quot;
+     * StringUtil.substring(&quot;abc&quot;, 4, 6)   = &quot;&quot;
+     * StringUtil.substring(&quot;abc&quot;, 2, 2)   = &quot;&quot;
+     * StringUtil.substring(&quot;abc&quot;, -2, -1) = &quot;b&quot;
+     * StringUtil.substring(&quot;abc&quot;, -4, 2)  = &quot;ab&quot;
+     * </pre>
+     *
+     * </p>
+     *
+     * @param str
+     *            字符串
+     * @param start
+     *            起始索引，如果为负数，表示从尾部计算
+     * @param end
+     *            结束索引（不含），如果为负数，表示从尾部计算
+     *
+     * @return 子串，如果原始串为<code>null</code>，则返回<code>null</code>
+     */
+    public static String substring(String str, int start, int end) {
+        return substring(str, start, end, StringUtils.EMPTY_STRING);
+    }
+
+    public static String substring(String str, int start, int end, String moreFiller) {
+        if (str == null) {
+            return null;
+        }
+
+        if (end < 0) {
+            end = str.length() + end;
+        }
+
+        if (start < 0) {
+            start = str.length() + start;
+        }
+
+        if (end > str.length()) {
+            end = str.length();
+        }
+
+        if (start > end) {
+            return EMPTY_STRING;
+        }
+
+        if (start < 0) {
+            start = 0;
+        }
+
+        if (end < 0) {
+            end = 0;
+        }
+
+        String returnString = str.substring(start, end);
+        if (!StringUtils.isEmpty(moreFiller)) {
+            if (returnString.length() < str.length()) {
+                if (start >= 0) {
+                    returnString += moreFiller;
+                } else {
+                    returnString = moreFiller + returnString;
+                }
+            }
+        }
+        return returnString;
+    }
+
+    /**
+     * 取得长度为指定字符数的最左边的子串。
+     *
+     * <pre>
+     * StringUtil.left(null, *)    = null
+     * StringUtil.left(*, -ve)     = &quot;&quot;
+     * StringUtil.left(&quot;&quot;, *)      = &quot;&quot;
+     * StringUtil.left(&quot;abc&quot;, 0)   = &quot;&quot;
+     * StringUtil.left(&quot;abc&quot;, 2)   = &quot;ab&quot;
+     * StringUtil.left(&quot;abc&quot;, 4)   = &quot;abc&quot;
+     * </pre>
+     *
+     * @param str
+     *            字符串
+     * @param len
+     *            最左子串的长度
+     *
+     * @return 子串，如果原始字串为<code>null</code>，则返回<code>null</code>
+     */
+    public static String left(String str, int len) {
+        if (str == null) {
+            return null;
+        }
+
+        if (len < 0) {
+            return EMPTY_STRING;
+        }
+
+        if (str.length() <= len) {
+            return str;
+        } else {
+            return str.substring(0, len);
+        }
+    }
+
+    /**
+     * 取得长度为指定字符数的最右边的子串。
+     *
+     * <pre>
+     * StringUtil.right(null, *)    = null
+     * StringUtil.right(*, -ve)     = &quot;&quot;
+     * StringUtil.right(&quot;&quot;, *)      = &quot;&quot;
+     * StringUtil.right(&quot;abc&quot;, 0)   = &quot;&quot;
+     * StringUtil.right(&quot;abc&quot;, 2)   = &quot;bc&quot;
+     * StringUtil.right(&quot;abc&quot;, 4)   = &quot;abc&quot;
+     * </pre>
+     *
+     * @param str
+     *            字符串
+     * @param len
+     *            最右子串的长度
+     *
+     * @return 子串，如果原始字串为<code>null</code>，则返回<code>null</code>
+     */
+    public static String right(String str, int len) {
+        if (str == null) {
+            return null;
+        }
+
+        if (len < 0) {
+            return EMPTY_STRING;
+        }
+
+        if (str.length() <= len) {
+            return str;
+        } else {
+            return str.substring(str.length() - len);
+        }
+    }
+
+    /**
+     * 取得从指定索引开始计算的、长度为指定字符数的子串。
+     *
+     * <pre>
+     * StringUtil.mid(null, *, *)    = null
+     * StringUtil.mid(*, *, -ve)     = &quot;&quot;
+     * StringUtil.mid(&quot;&quot;, 0, *)      = &quot;&quot;
+     * StringUtil.mid(&quot;abc&quot;, 0, 2)   = &quot;ab&quot;
+     * StringUtil.mid(&quot;abc&quot;, 0, 4)   = &quot;abc&quot;
+     * StringUtil.mid(&quot;abc&quot;, 2, 4)   = &quot;c&quot;
+     * StringUtil.mid(&quot;abc&quot;, 4, 2)   = &quot;&quot;
+     * StringUtil.mid(&quot;abc&quot;, -2, 2)  = &quot;ab&quot;
+     * </pre>
+     *
+     * @param str
+     *            字符串
+     * @param pos
+     *            起始索引，如果为负数，则看作<code>0</code>
+     * @param len
+     *            子串的长度，如果为负数，则看作长度为<code>0</code>
+     *
+     * @return 子串，如果原始字串为<code>null</code>，则返回<code>null</code>
+     */
+    public static String mid(String str, int pos, int len) {
+        if (str == null) {
+            return null;
+        }
+
+        if ((len < 0) || (pos > str.length())) {
+            return EMPTY_STRING;
+        }
+
+        if (pos < 0) {
+            pos = 0;
+        }
+
+        if (str.length() <= (pos + len)) {
+            return str.substring(pos);
+        } else {
+            return str.substring(pos, pos + len);
+        }
+    }
+
+    public static boolean isBlank(String str) {
+        int length;
+
+        if ((str == null) || ((length = str.length()) == 0)) {
+            return true;
+        }
+
+        for (int i = 0; i < length; i++) {
+            if (!Character.isWhitespace(str.charAt(i))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+
+
 }
