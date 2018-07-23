@@ -20,6 +20,8 @@ public class DateUtils {
     public final static String yyyyMMddHH = "yyyyMMddHH";
     public final static String webFormat = "yyyy-MM-dd";
 
+    public final static long ONE_DAY_SECONDS = 86400;
+
     public static String getDateString(Date date, DateFormat dateFormat) {
         if (date == null || dateFormat == null) {
             return null;
@@ -87,6 +89,20 @@ public class DateUtils {
 
     public static Date addSeconds(Date date1, long secs) {
         return new Date(date1.getTime() + (secs * 1000));
+    }
+
+    /**
+     * 取得新的日期
+     *
+     * @param date1
+     *            日期
+     * @param days
+     *            天数
+     *
+     * @return 新的日期
+     */
+    public static Date addDays(Date date1, long days) {
+        return addSeconds(date1, days * ONE_DAY_SECONDS);
     }
 
     /**
