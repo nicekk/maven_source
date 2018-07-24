@@ -19,6 +19,8 @@ public class DateUtils {
     public final static String shortDateFormat = "MM-dd";
     public final static String yyyyMMddHH = "yyyyMMddHH";
     public final static String webFormat = "yyyy-MM-dd";
+    public final static String dayOnlyFormat = "dd";
+    public final static String monthOnlyFormat = "MM";
 
     public final static long ONE_DAY_SECONDS = 86400;
 
@@ -193,5 +195,61 @@ public class DateUtils {
 
         return getDateString(date, dateFormat);
     }
+
+    /**
+     * 获取小时
+     *
+     * @param date
+     * @return
+     */
+    public static String getHour(Date date) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        return hour < 10 ? "0" + hour : Integer.toString(hour);
+    }
+
+    /**
+     * 返回当前日期的星级几
+     *
+     * @param dt
+     *            日期
+     * @return 1..7,对应:"7=周日,1=周一...6=周六"
+     */
+    public static int getIntWeekOfDate(Date dt) {
+        Integer[] weekDays = { 7, 1, 2, 3, 4, 5, 6 };
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dt);
+
+        int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        if (w < 0)
+            w = 0;
+
+        return weekDays[w];
+    }
+
+
+    /**
+     * 获取几号
+     *
+     * @param date
+     * @return
+     */
+    public static String getDay(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat(dayOnlyFormat);
+        return getDateString(date, dateFormat);
+    }
+
+    /**
+     * 获取月份
+     *
+     * @param date
+     * @return
+     */
+    public static String getMonth(Date date) {
+        DateFormat dateFormat = new SimpleDateFormat(monthOnlyFormat);
+        return getDateString(date, dateFormat);
+    }
+
 
 }
