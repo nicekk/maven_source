@@ -1,5 +1,7 @@
 package com.dsj361.common.lang;
 
+import com.sun.deploy.util.ArrayUtil;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -584,5 +586,45 @@ public class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
         }
 
         buffer.append(']');
+    }
+
+    /**
+     * 对int类型数组求和
+     *
+     * @param source
+     * @return
+     */
+    public static long sum(long[] source) {
+        if (source == null || source.length == 0) {
+            return 0;
+        }
+        long sum = 0;
+        for (long i : source) {
+            sum += i;
+        }
+        return sum;
+    }
+
+    /**
+     * 对double类型的数组求和
+     *
+     * @param source
+     * @return
+     */
+    public static double sum(double[] source) {
+        if (source == null || source.length == 0) {
+            return 0;
+        }
+        double sum = 0;
+        for (double i : source) {
+            sum += i;
+        }
+        return sum;
+    }
+
+
+    public static void main(String[] args) {
+        long[] a = new long[]{};
+        System.out.println(ArrayUtils.sum(a));
     }
 }
