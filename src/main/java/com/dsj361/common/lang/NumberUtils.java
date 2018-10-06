@@ -23,6 +23,7 @@ public class NumberUtils extends org.apache.commons.lang.math.NumberUtils {
         return flag;
     }
 
+
     public static long toLong(Object obj) {
         return toLong(obj, 0);
     }
@@ -103,6 +104,8 @@ public class NumberUtils extends org.apache.commons.lang.math.NumberUtils {
         }
         return toDouble(ObjectUtils.toString(obj), defaultValue);
     }
+
+
 
 
 }

@@ -1,7 +1,5 @@
 package com.dsj361.common.lang;
 
-import com.sun.deploy.util.ArrayUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 
