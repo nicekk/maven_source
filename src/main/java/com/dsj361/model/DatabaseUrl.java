@@ -1,5 +1,6 @@
 package com.dsj361.model;
 
+import com.dsj361.common.enums.DatabaseTypeEnum;
 import com.dsj361.common.model.BaseModel;
 
 /**
@@ -18,7 +19,7 @@ public class DatabaseUrl extends BaseModel {
     /**
      * 数据库类型
      */
-    private String type;
+    private DatabaseTypeEnum type;
 
     /**
      * ip
@@ -68,11 +69,11 @@ public class DatabaseUrl extends BaseModel {
         this.alias = alias;
     }
 
-    public String getType() {
+    public DatabaseTypeEnum getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(DatabaseTypeEnum type) {
         this.type = type;
     }
 

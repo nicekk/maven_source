@@ -1,5 +1,6 @@
 package com.dsj361.dao;
 
+import com.dsj361.common.enums.DatabaseTypeEnum;
 import com.dsj361.common.enums.ModeEnum;
 import com.dsj361.common.lang.ListUtils;
 import com.dsj361.model.DatabaseUrl;
@@ -128,7 +129,7 @@ public class DatabaseUrlConfigDAO {
     private static DatabaseUrl convertResultSet(ResultSet rs) throws SQLException {
         DatabaseUrl databaseUrl = new DatabaseUrl();
         databaseUrl.setAlias(rs.getString(1));
-        databaseUrl.setType(rs.getString(2));
+        databaseUrl.setType(DatabaseTypeEnum.valueOf(rs.getString(2).toUpperCase()));
         databaseUrl.setHost(rs.getString(3));
         databaseUrl.setPort(rs.getString(4));
         databaseUrl.setDsnName(rs.getString(5));
