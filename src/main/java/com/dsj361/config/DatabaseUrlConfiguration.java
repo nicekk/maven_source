@@ -1,5 +1,6 @@
 package com.dsj361.config;
 
+import com.dsj361.common.enums.ModeEnum;
 import com.dsj361.dao.DAOFactory;
 import com.dsj361.model.DatabaseUrl;
 
@@ -20,7 +21,7 @@ public class DatabaseUrlConfiguration {
      * @param alias
      * @return
      */
-    public static DatabaseUrl getDataBaseUrlByAlias(String mode, String alias) {
+    public static DatabaseUrl getDataBaseUrlByAlias(ModeEnum mode, String alias) {
         return DAOFactory.getDatabaseUrlConfigDAO().getDatabaseUrlByAlias(mode, alias);
     }
 
@@ -31,7 +32,7 @@ public class DatabaseUrlConfiguration {
      * @param alias
      * @return
      */
-    public static List<DatabaseUrl> getDatabaseUrlsByAlias(String mode, List<String> alias) {
+    public static List<DatabaseUrl> getDatabaseUrlsByAlias(ModeEnum mode, List<String> alias) {
         return DAOFactory.getDatabaseUrlConfigDAO().getDatabaseUrlsByAlias(mode, alias);
     }
 

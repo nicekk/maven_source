@@ -1,5 +1,6 @@
 package com.dsj361.dao;
 
+import com.dsj361.common.enums.ModeEnum;
 import com.dsj361.common.lang.ListUtils;
 import com.dsj361.model.DatabaseUrl;
 import org.apache.log4j.Logger;
@@ -24,7 +25,7 @@ public class DatabaseUrlConfigDAO {
      * @param dbAlias
      * @return
      */
-    public DatabaseUrl getDatabaseUrlByAlias(String mode, String dbAlias) {
+    public DatabaseUrl getDatabaseUrlByAlias(ModeEnum mode, String dbAlias) {
         DbManager.init(mode);
         Connection connection = DbManager.getConnection();
         if (connection == null) {
@@ -63,7 +64,7 @@ public class DatabaseUrlConfigDAO {
      * @param alias
      * @return
      */
-    public List<DatabaseUrl> getDatabaseUrlsByAlias(String mode, List<String> alias) {
+    public List<DatabaseUrl> getDatabaseUrlsByAlias(ModeEnum mode, List<String> alias) {
         DbManager.init(mode);
         Connection connection = DbManager.getConnection();
         if (connection == null) {

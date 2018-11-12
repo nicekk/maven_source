@@ -63,7 +63,6 @@ public class DateUtils {
      *
      * @param date
      * @param hours
-     *
      * @return
      */
     public static Date addHours(Date date, long hours) {
@@ -75,7 +74,6 @@ public class DateUtils {
      *
      * @param date
      * @param minutes
-     *
      * @return
      */
     public static Date addMinutes(Date date, long minutes) {
@@ -85,7 +83,6 @@ public class DateUtils {
     /**
      * @param date1
      * @param secs
-     *
      * @return
      */
 
@@ -96,11 +93,8 @@ public class DateUtils {
     /**
      * 取得新的日期
      *
-     * @param date1
-     *            日期
-     * @param days
-     *            天数
-     *
+     * @param date1 日期
+     * @param days  天数
      * @return 新的日期
      */
     public static Date addDays(Date date1, long days) {
@@ -158,7 +152,6 @@ public class DateUtils {
      *
      * @param one
      * @param two
-     *
      * @return 间隔小时数
      */
     public static long getDiffHours(Date one, Date two) {
@@ -212,12 +205,11 @@ public class DateUtils {
     /**
      * 返回当前日期的星级几
      *
-     * @param dt
-     *            日期
-     * @return 1..7,对应:"7=周日,1=周一...6=周六"
+     * @param dt 日期
+     * @return 1..7, 对应:"7=周日,1=周一...6=周六"
      */
     public static int getIntWeekOfDate(Date dt) {
-        Integer[] weekDays = { 7, 1, 2, 3, 4, 5, 6 };
+        Integer[] weekDays = {7, 1, 2, 3, 4, 5, 6};
         Calendar cal = Calendar.getInstance();
         cal.setTime(dt);
 
@@ -251,5 +243,14 @@ public class DateUtils {
         return getDateString(date, dateFormat);
     }
 
+    /**
+     * 从时间戳获得小时数
+     *
+     * @param timestamp
+     * @return
+     */
+    public static String getHourFromTimeStamp(long timestamp) {
+        return getHour(new Date(timestamp));
+    }
 
 }

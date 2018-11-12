@@ -1,5 +1,6 @@
 package com.dsj361.dao;
 
+import com.dsj361.common.enums.ModeEnum;
 import com.dsj361.common.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -18,9 +19,9 @@ public class DbManager {
 
     private static final Logger log = Logger.getLogger(DbManager.class);
 
-    private static String mode;
+    private static ModeEnum mode;
 
-    public static void init(String mode) {
+    public static void init(ModeEnum mode) {
         DbManager.mode = mode;
     }
 
@@ -30,12 +31,12 @@ public class DbManager {
      * @return
      */
     public static Connection getConnection() {
-        if (StringUtils.isEmpty(mode)) {
+        if (mode == null) {
             log.error("mode为null，请调用init()方法设置!");
             return null;
         }
         Properties prop = new Properties();
-        String configFileName = "db_" + mode + ".config";
+        String configFileName = "db_" + mode.name().toLowerCase() + ".config";
         InputStream is = DbManager.class.getClassLoader().getResourceAsStream(configFileName);
         try {
             prop.load(is);
