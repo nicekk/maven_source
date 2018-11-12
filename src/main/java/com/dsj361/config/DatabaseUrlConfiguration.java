@@ -36,4 +36,13 @@ public class DatabaseUrlConfiguration {
         return DAOFactory.getDatabaseUrlConfigDAO().getDatabaseUrlsByAlias(mode, alias);
     }
 
+    /**
+     * 获得所有的数据库连接串
+     *
+     * @param mode
+     * @return
+     */
+    public static List<DatabaseUrl> getAllDatabaseUrls(ModeEnum mode) {
+        return DAOFactory.getDatabaseUrlConfigDAO().getAllDatabaseUrls(mode);
+    }
 }

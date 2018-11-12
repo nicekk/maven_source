@@ -10,6 +10,7 @@ public class TestConnection {
 
     public static void main(String[] args) {
         DatabaseUrl databaseUrl = DatabaseUrlConfiguration.getDataBaseUrlByAlias(ModeEnum.DEV, "recommend");
-        System.out.println(databaseUrl);
+//        System.out.println(databaseUrl);
+        System.out.println(DatabaseUrlConfiguration.getAllDatabaseUrls(ModeEnum.DEV));
     }
 }
