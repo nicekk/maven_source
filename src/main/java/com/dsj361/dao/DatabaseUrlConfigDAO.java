@@ -129,7 +129,8 @@ public class DatabaseUrlConfigDAO {
     private static DatabaseUrl convertResultSet(ResultSet rs) throws SQLException {
         DatabaseUrl databaseUrl = new DatabaseUrl();
         databaseUrl.setAlias(rs.getString(1));
-        databaseUrl.setType(DatabaseTypeEnum.valueOf(rs.getString(2).toUpperCase()));
+        DatabaseTypeEnum type = DatabaseTypeEnum.valueOf(rs.getString(2).toUpperCase());
+        databaseUrl.setType(type);
         databaseUrl.setHost(rs.getString(3));
         databaseUrl.setPort(rs.getString(4));
         databaseUrl.setDsnName(rs.getString(5));
@@ -137,7 +138,11 @@ public class DatabaseUrlConfigDAO {
         databaseUrl.setUserName(rs.getString(7));
         databaseUrl.setPassword(rs.getString(8));
         databaseUrl.setDriverClass(rs.getString(9));
-        databaseUrl.setJdbcUrl("jdbc:oracle:thin:@" + databaseUrl.getHost() + ":" + databaseUrl.getPort() + "/" + databaseUrl.getDbName());
+        if (type == DatabaseTypeEnum.ORACLE) {
+            databaseUrl.setJdbcUrl("jdbc:oracle:thin:@" + databaseUrl.getHost() + ":" + databaseUrl.getPort() + "/" + databaseUrl.getDbName());
+        } else if (type == DatabaseTypeEnum.MYSQL) {
+            databaseUrl.setJdbcUrl("jdbc:mysql://" + databaseUrl.getHost() + ":" + databaseUrl.getPort() + "/" + databaseUrl.getDbName());
+        }
         return databaseUrl;
     }
 }
