@@ -24,6 +24,8 @@ public class DateUtils {
 
     public final static long ONE_DAY_SECONDS = 86400;
 
+    public final static long ONE_DAY_MILL_SECONDS = 86400000;
+
     public static String getDateString(Date date, DateFormat dateFormat) {
         if (date == null || dateFormat == null) {
             return null;
@@ -251,6 +253,19 @@ public class DateUtils {
      */
     public static String getHourFromTimeStamp(long timestamp) {
         return getHour(new Date(timestamp));
+    }
+
+    /**
+     * 获得指定前几天的日期字符串yyyymmdd
+     *
+     * @param days
+     * @return
+     */
+    public static String getBeforeDayString(int days) {
+        Date date = new Date(System.currentTimeMillis() - (ONE_DAY_MILL_SECONDS * days));
+        DateFormat dateFormat = getNewDateFormat(shortFormat);
+
+        return getDateString(date, dateFormat);
     }
 
 }

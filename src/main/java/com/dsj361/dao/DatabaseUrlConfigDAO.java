@@ -120,6 +120,35 @@ public class DatabaseUrlConfigDAO {
     }
 
     /**
+     * 根据一组别名查找
+     *
+     * @param mode
+     * @return
+     */
+    public List<DatabaseUrl> getDatabaseUrlByType(ModeEnum mode, DatabaseTypeEnum type) {
+        DbManager.init(mode);
+        Connection connection = DbManager.getConnection();
+        if (connection == null) {
+            log.error("获取连接异常!");
+            return null;
+        }
+        try {
+            PreparedStatement ps = connection.prepareStatement("select * from database_url_config where type = '" + type.name().toLowerCase() + "' and enabled=1");
+            ResultSet rs = ps.executeQuery();
+            List<DatabaseUrl> urls = new ArrayList<>();
+            while (rs.next()) {
+                DatabaseUrl databaseUrl = convertResultSet(rs);
+                urls.add(databaseUrl);
+            }
+            DbManager.close(connection);
+            return urls;
+        } catch (Exception e) {
+            log.error("查询数据库异常，", e);
+            return null;
+        }
+    }
+
+    /**
      * 转换ResultSet
      *
      * @param rs
@@ -141,7 +170,7 @@ public class DatabaseUrlConfigDAO {
         if (type == DatabaseTypeEnum.ORACLE) {
             databaseUrl.setJdbcUrl("jdbc:oracle:thin:@" + databaseUrl.getHost() + ":" + databaseUrl.getPort() + "/" + databaseUrl.getDbName());
         } else if (type == DatabaseTypeEnum.MYSQL) {
-            databaseUrl.setJdbcUrl("jdbc:mysql://" + databaseUrl.getHost() + ":" + databaseUrl.getPort() + "/" + databaseUrl.getDbName());
+            databaseUrl.setJdbcUrl("jdbc:mysql://" + databaseUrl.getHost() + ":" + databaseUrl.getPort() + "/" + databaseUrl.getDbName() + "?useUnicode=true&characterEncoding=UTF-8");
         }
         return databaseUrl;
     }

@@ -1,5 +1,6 @@
 package com.dsj361.config;
 
+import com.dsj361.common.enums.DatabaseTypeEnum;
 import com.dsj361.common.enums.ModeEnum;
 import com.dsj361.dao.DAOFactory;
 import com.dsj361.model.DatabaseUrl;
@@ -44,5 +45,15 @@ public class DatabaseUrlConfiguration {
      */
     public static List<DatabaseUrl> getAllDatabaseUrls(ModeEnum mode) {
         return DAOFactory.getDatabaseUrlConfigDAO().getAllDatabaseUrls(mode);
+    }
+
+    /**
+     * 根据数据库类型获取数据库连接
+     *
+     * @param type
+     * @return
+     */
+    public static List<DatabaseUrl> getDatabaseUrlsByType(ModeEnum mode, DatabaseTypeEnum type) {
+        return DAOFactory.getDatabaseUrlConfigDAO().getDatabaseUrlByType(mode, type);
     }
 }
