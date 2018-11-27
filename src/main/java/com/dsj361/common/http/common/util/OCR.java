@@ -1,11 +1,11 @@
 package com.dsj361.common.http.common.util;
 
-import com.arronlong.httpclientutil.HttpClientUtil;
-import com.arronlong.httpclientutil.builder.HCB;
-import com.arronlong.httpclientutil.common.HttpConfig;
-import com.arronlong.httpclientutil.common.HttpHeader;
-import com.arronlong.httpclientutil.common.Utils;
-import com.arronlong.httpclientutil.exception.HttpProcessException;
+import com.dsj361.common.http.HttpClientUtil;
+import com.dsj361.common.http.builder.HCB;
+import com.dsj361.common.http.common.HttpConfig;
+import com.dsj361.common.http.common.HttpHeader;
+import com.dsj361.common.http.common.Utils;
+import com.dsj361.common.http.exception.HttpProcessException;
 import org.apache.http.Header;
 import org.apache.http.client.HttpClient;
 
@@ -33,7 +33,7 @@ public class OCR {
 	private static HttpClient client  =null; //=HCB.custom().proxy("127.0.0.1", 8888).build();
 
 	public static void enableCatch(){
-		client =HCB.custom().proxy("127.0.0.1", 8888).build();
+		client = HCB.custom().proxy("127.0.0.1", 8888).build();
 	}
 	public static void unEnableCatch(){
 		client =null;

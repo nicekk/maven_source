@@ -1,11 +1,11 @@
 package com.dsj361.common.http;
 
-import com.arronlong.httpclientutil.builder.HCB;
-import com.arronlong.httpclientutil.common.HttpConfig;
-import com.arronlong.httpclientutil.common.HttpMethods;
-import com.arronlong.httpclientutil.common.HttpResult;
-import com.arronlong.httpclientutil.common.Utils;
-import com.arronlong.httpclientutil.exception.HttpProcessException;
+import com.dsj361.common.http.builder.HCB;
+import com.dsj361.common.http.common.HttpConfig;
+import com.dsj361.common.http.common.HttpMethods;
+import com.dsj361.common.http.common.HttpResult;
+import com.dsj361.common.http.common.Utils;
+import com.dsj361.common.http.exception.HttpProcessException;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
