@@ -1,5 +1,8 @@
 package com.dsj361.common.lang;
 
+import oracle.sql.TIMESTAMP;
+
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -268,4 +271,39 @@ public class DateUtils {
         return getDateString(date, dateFormat);
     }
 
+    public static long getDiffMinutes(Date one, Date two) {
+        return getDiffMinutes(one, two, false);
+    }
+
+    /**
+     * 计算2个时间的差异分钟数，如果leftSecondsToMinutes为ture，且日期相差的秒数数不能被60整除(表示2个日期差，有X分Y秒) ， 则额外增加1分返回
+     *
+     * @param one
+     * @param two
+     * @param leftSecondsToMinute
+     * @return
+     */
+    public static long getDiffMinutes(Date one, Date two, boolean leftSecondsToMinute) {
+        Calendar sysDate = new GregorianCalendar();
+
+        sysDate.setTime(one);
+
+        Calendar failDate = new GregorianCalendar();
+
+        failDate.setTime(two);
+        long diffMinutes = (sysDate.getTimeInMillis() - failDate.getTimeInMillis()) / (60 * 1000);
+        if (leftSecondsToMinute && (sysDate.getTimeInMillis() - failDate.getTimeInMillis()) % (60 * 1000) > 0) {
+            diffMinutes += 1;
+        }
+        return diffMinutes;
+    }
+
+    /**
+     * 获得当前的oracle时间
+     *
+     * @return
+     */
+    public static TIMESTAMP getCurrentOracleTimestamp() {
+        return new oracle.sql.TIMESTAMP(new Timestamp(new Date().getTime()));
+    }
 }
