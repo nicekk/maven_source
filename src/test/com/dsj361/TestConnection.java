@@ -1,3 +1,4 @@
+package com.dsj361;
 import com.dsj361.common.enums.DatabaseTypeEnum;
 import com.dsj361.common.enums.ModeEnum;
 import com.dsj361.config.DatabaseUrlConfiguration;
@@ -15,7 +16,7 @@ public class TestConnection {
 //        DatabaseUrl databaseUrl = DatabaseUrlConfiguration.getDataBaseUrlByAlias(ModeEnum.DEV, "recommend");
 //        System.out.println(databaseUrl);
 //        System.out.println(DatabaseUrlConfiguration.getAllDatabaseUrls(ModeEnum.DEV));
-        List<DatabaseUrl> urls = DatabaseUrlConfiguration.getDatabaseUrlsByType(ModeEnum.DEV, DatabaseTypeEnum.MYSQL);
+        List<DatabaseUrl> urls = DatabaseUrlConfiguration.getAllDatabaseUrls(ModeEnum.DEV);
         System.out.println(urls);
     }
 
