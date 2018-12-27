@@ -1,7 +1,12 @@
 package com.dsj361.common.lang;
 
+import com.dsj361.common.http.common.util.StringUtil;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author wangkai
@@ -1249,7 +1254,409 @@ public class StringUtils {
         return str.indexOf(searchStr, startPos);
     }
 
+    /*
+     * =========================================================================
+     * = ==
+     */
+    /* 替换子串。 */
+    /*
+     * =========================================================================
+     * = ==
+     */
 
+    /**
+     * 替换指定的子串，只替换第一个出现的子串。
+     *
+     * <p>
+     * 如果字符串为<code>null</code>则返回<code>null</code>，如果指定子串为<code>null</code>
+     * ，则返回原字符串。
+     *
+     * <pre>
+     * StringUtil.replaceOnce(null, *, *)        = null
+     * StringUtil.replaceOnce(&quot;&quot;, *, *)          = &quot;&quot;
+     * StringUtil.replaceOnce(&quot;aba&quot;, null, null) = &quot;aba&quot;
+     * StringUtil.replaceOnce(&quot;aba&quot;, null, null) = &quot;aba&quot;
+     * StringUtil.replaceOnce(&quot;aba&quot;, &quot;a&quot;, null)  = &quot;aba&quot;
+     * StringUtil.replaceOnce(&quot;aba&quot;, &quot;a&quot;, &quot;&quot;)    = &quot;ba&quot;
+     * StringUtil.replaceOnce(&quot;aba&quot;, &quot;a&quot;, &quot;z&quot;)   = &quot;zba&quot;
+     * </pre>
+     *
+     * </p>
+     *
+     * @param text
+     *            要扫描的字符串
+     * @param repl
+     *            要搜索的子串
+     * @param with
+     *            替换字符串
+     *
+     * @return 被替换后的字符串，如果原始字符串为<code>null</code>，则返回<code>null</code>
+     */
+    public static String replaceOnce(String text, String repl, String with) {
+        return replace(text, repl, with, 1);
+    }
 
+    /**
+     * 替换指定的子串，替换所有出现的子串。
+     *
+     * <p>
+     * 如果字符串为<code>null</code>则返回<code>null</code>，如果指定子串为<code>null</code>
+     * ，则返回原字符串。
+     *
+     * <pre>
+     * StringUtil.replace(null, *, *)        = null
+     * StringUtil.replace(&quot;&quot;, *, *)          = &quot;&quot;
+     * StringUtil.replace(&quot;aba&quot;, null, null) = &quot;aba&quot;
+     * StringUtil.replace(&quot;aba&quot;, null, null) = &quot;aba&quot;
+     * StringUtil.replace(&quot;aba&quot;, &quot;a&quot;, null)  = &quot;aba&quot;
+     * StringUtil.replace(&quot;aba&quot;, &quot;a&quot;, &quot;&quot;)    = &quot;b&quot;
+     * StringUtil.replace(&quot;aba&quot;, &quot;a&quot;, &quot;z&quot;)   = &quot;zbz&quot;
+     * </pre>
+     *
+     * </p>
+     *
+     * @param text
+     *            要扫描的字符串
+     * @param repl
+     *            要搜索的子串
+     * @param with
+     *            替换字符串
+     *
+     * @return 被替换后的字符串，如果原始字符串为<code>null</code>，则返回<code>null</code>
+     */
+    public static String replace(String text, String repl, String with) {
+        return replace(text, repl, with, -1);
+    }
 
+    /**
+     * 替换
+     *
+     * @param texts
+     * @param repl
+     * @param with
+     * @return
+     */
+    public static void replace(String[] texts, String repl, String with) {
+        if (texts == null) {
+            return;
+        }
+        for (int i = 0; i < texts.length; i++) {
+            texts[i] = replace(texts[i], repl, with);
+        }
+    }
+
+    /**
+     * 替换
+     *
+     * @param texts
+     * @param repl
+     * @param with
+     * @return
+     */
+    public static void replace(List<String> texts, String repl, String with) {
+        if (texts == null) {
+            return;
+        }
+        for (int i = 0; i < texts.size(); i++) {
+            texts.set(i, replace(texts.get(i), repl, with));
+        }
+    }
+
+    /**
+     * 用指定字符串replaceString替换text中能够和正则表达式匹配的字符串
+     *
+     * @param text
+     * @param regex
+     * @param with
+     * @return
+     */
+    public static String replaceWithRegex(String text, String regex, String replaceString) {
+        if (StringUtils.isEmpty(text)) {
+            return text;
+        }
+        if (StringUtils.isEmpty(regex)) {
+            return text;
+        }
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(text);
+        if (matcher.find()) {
+            text = matcher.replaceAll(replaceString);
+        }
+        return text;
+    }
+
+    /**
+     * 字符串替换
+     *
+     * @param text
+     * @param repls
+     * @param with
+     * @return
+     */
+    public static String replace(String text, String[] repls, String with) {
+        for (String repl : repls) {
+            text = replace(text, repl, with, -1);
+        }
+        return text;
+    }
+
+    /**
+     * 字符串替换
+     *
+     * @param text
+     * @param replaceMap
+     * @return
+     */
+    public static String replace(String text, Map<?, ?> replaceMap) {
+        if (replaceMap == null) {
+            return text;
+
+        }
+        for (Map.Entry<?, ?> entry : replaceMap.entrySet()) {
+            text = replace(text, ObjectUtils.toString(entry.getKey()), ObjectUtils.toString(entry.getValue()));
+        }
+        return text;
+    }
+
+    /**
+     * 替换指定的子串，替换指定的次数。
+     *
+     * <p>
+     * 如果字符串为<code>null</code>则返回<code>null</code>，如果指定子串为<code>null</code>
+     * ，则返回原字符串。
+     *
+     * <pre>
+     * StringUtil.replace(null, *, *, *)         = null
+     * StringUtil.replace(&quot;&quot;, *, *, *)           = &quot;&quot;
+     * StringUtil.replace(&quot;abaa&quot;, null, null, 1) = &quot;abaa&quot;
+     * StringUtil.replace(&quot;abaa&quot;, null, null, 1) = &quot;abaa&quot;
+     * StringUtil.replace(&quot;abaa&quot;, &quot;a&quot;, null, 1)  = &quot;abaa&quot;
+     * StringUtil.replace(&quot;abaa&quot;, &quot;a&quot;, &quot;&quot;, 1)    = &quot;baa&quot;
+     * StringUtil.replace(&quot;abaa&quot;, &quot;a&quot;, &quot;z&quot;, 0)   = &quot;abaa&quot;
+     * StringUtil.replace(&quot;abaa&quot;, &quot;a&quot;, &quot;z&quot;, 1)   = &quot;zbaa&quot;
+     * StringUtil.replace(&quot;abaa&quot;, &quot;a&quot;, &quot;z&quot;, 2)   = &quot;zbza&quot;
+     * StringUtil.replace(&quot;abaa&quot;, &quot;a&quot;, &quot;z&quot;, -1)  = &quot;zbzz&quot;
+     * </pre>
+     *
+     * </p>
+     *
+     * @param text
+     *            要扫描的字符串
+     * @param repl
+     *            要搜索的子串
+     * @param with
+     *            替换字符串
+     * @param max
+     *            maximum number of values to replace, or <code>-1</code> if no
+     *            maximum
+     *
+     * @return 被替换后的字符串，如果原始字符串为<code>null</code>，则返回<code>null</code>
+     */
+    public static String replace(String text, String repl, String with, int max) {
+        if ((text == null) || (repl == null) || (with == null) || (repl.length() == 0) || (max == 0)) {
+            return text;
+        }
+
+        StringBuffer buf = new StringBuffer(text.length());
+        int start = 0;
+        int end = 0;
+
+        while ((end = text.indexOf(repl, start)) != -1) {
+            buf.append(text.substring(start, end)).append(with);
+            start = end + repl.length();
+
+            if (--max == 0) {
+                break;
+            }
+        }
+
+        buf.append(text.substring(start));
+        return buf.toString();
+    }
+
+    /**
+     * 将字符串中所有指定的字符，替换成另一个。
+     *
+     * <p>
+     * 如果字符串为<code>null</code>则返回<code>null</code>。
+     *
+     * <pre>
+     * StringUtil.replaceChars(null, *, *)        = null
+     * StringUtil.replaceChars(&quot;&quot;, *, *)          = &quot;&quot;
+     * StringUtil.replaceChars(&quot;abcba&quot;, 'b', 'y') = &quot;aycya&quot;
+     * StringUtil.replaceChars(&quot;abcba&quot;, 'z', 'y') = &quot;abcba&quot;
+     * </pre>
+     *
+     * </p>
+     *
+     * @param str
+     *            要扫描的字符串
+     * @param searchChar
+     *            要搜索的字符
+     * @param replaceChar
+     *            替换字符
+     *
+     * @return 被替换后的字符串，如果原始字符串为<code>null</code>，则返回<code>null</code>
+     */
+    public static String replaceChars(String str, char searchChar, char replaceChar) {
+        if (str == null) {
+            return null;
+        }
+
+        return str.replace(searchChar, replaceChar);
+    }
+
+    /**
+     * 将字符串中所有指定的字符，替换成另一个。
+     *
+     * <p>
+     * 如果字符串为<code>null</code>则返回<code>null</code>。如果搜索字符串为<code>null</code>
+     * 或空，则返回原字符串。
+     * </p>
+     *
+     * <p>
+     * 例如：
+     * <code>replaceChars(&quot;hello&quot;, &quot;ho&quot;, &quot;jy&quot;) = jelly</code>
+     * 。
+     * </p>
+     *
+     * <p>
+     * 通常搜索字符串和替换字符串是等长的，如果搜索字符串比替换字符串长，则多余的字符将被删除。 如果搜索字符串比替换字符串短，则缺少的字符将被忽略。
+     *
+     * <pre>
+     * StringUtil.replaceChars(null, *, *)           = null
+     * StringUtil.replaceChars(&quot;&quot;, *, *)             = &quot;&quot;
+     * StringUtil.replaceChars(&quot;abc&quot;, null, *)       = &quot;abc&quot;
+     * StringUtil.replaceChars(&quot;abc&quot;, &quot;&quot;, *)         = &quot;abc&quot;
+     * StringUtil.replaceChars(&quot;abc&quot;, &quot;b&quot;, null)     = &quot;ac&quot;
+     * StringUtil.replaceChars(&quot;abc&quot;, &quot;b&quot;, &quot;&quot;)       = &quot;ac&quot;
+     * StringUtil.replaceChars(&quot;abcba&quot;, &quot;bc&quot;, &quot;yz&quot;)  = &quot;ayzya&quot;
+     * StringUtil.replaceChars(&quot;abcba&quot;, &quot;bc&quot;, &quot;y&quot;)   = &quot;ayya&quot;
+     * StringUtil.replaceChars(&quot;abcba&quot;, &quot;bc&quot;, &quot;yzx&quot;) = &quot;ayzya&quot;
+     * </pre>
+     *
+     * </p>
+     *
+     * @param str
+     *            要扫描的字符串
+     * @param searchChars
+     *            要搜索的字符串
+     * @param replaceChars
+     *            替换字符串
+     *
+     * @return 被替换后的字符串，如果原始字符串为<code>null</code>，则返回<code>null</code>
+     */
+    public static String replaceChars(String str, String searchChars, String replaceChars) {
+        if ((str == null) || (str.length() == 0) || (searchChars == null) || (searchChars.length() == 0)) {
+            return str;
+        }
+
+        char[] chars = str.toCharArray();
+        int len = chars.length;
+        boolean modified = false;
+
+        for (int i = 0, isize = searchChars.length(); i < isize; i++) {
+            char searchChar = searchChars.charAt(i);
+
+            if ((replaceChars == null) || (i >= replaceChars.length())) {
+                // 删除
+                int pos = 0;
+
+                for (int j = 0; j < len; j++) {
+                    if (chars[j] != searchChar) {
+                        chars[pos++] = chars[j];
+                    } else {
+                        modified = true;
+                    }
+                }
+
+                len = pos;
+            } else {
+                // 替换
+                for (int j = 0; j < len; j++) {
+                    if (chars[j] == searchChar) {
+                        chars[j] = replaceChars.charAt(i);
+                        modified = true;
+                    }
+                }
+            }
+        }
+
+        if (!modified) {
+            return str;
+        }
+
+        return new String(chars, 0, len);
+    }
+
+    /**
+     * 将指定的子串用另一指定子串覆盖。
+     *
+     * <p>
+     * 如果字符串为<code>null</code>，则返回<code>null</code>。 负的索引值将被看作<code>0</code>
+     * ，越界的索引值将被设置成字符串的长度相同的值。
+     *
+     * <pre>
+     * StringUtil.overlay(null, *, *, *)            = null
+     * StringUtil.overlay(&quot;&quot;, &quot;abc&quot;, 0, 0)          = &quot;abc&quot;
+     * StringUtil.overlay(&quot;abcdef&quot;, null, 2, 4)     = &quot;abef&quot;
+     * StringUtil.overlay(&quot;abcdef&quot;, &quot;&quot;, 2, 4)       = &quot;abef&quot;
+     * StringUtil.overlay(&quot;abcdef&quot;, &quot;&quot;, 4, 2)       = &quot;abef&quot;
+     * StringUtil.overlay(&quot;abcdef&quot;, &quot;zzzz&quot;, 2, 4)   = &quot;abzzzzef&quot;
+     * StringUtil.overlay(&quot;abcdef&quot;, &quot;zzzz&quot;, 4, 2)   = &quot;abzzzzef&quot;
+     * StringUtil.overlay(&quot;abcdef&quot;, &quot;zzzz&quot;, -1, 4)  = &quot;zzzzef&quot;
+     * StringUtil.overlay(&quot;abcdef&quot;, &quot;zzzz&quot;, 2, 8)   = &quot;abzzzz&quot;
+     * StringUtil.overlay(&quot;abcdef&quot;, &quot;zzzz&quot;, -2, -3) = &quot;zzzzabcdef&quot;
+     * StringUtil.overlay(&quot;abcdef&quot;, &quot;zzzz&quot;, 8, 10)  = &quot;abcdefzzzz&quot;
+     * </pre>
+     *
+     * </p>
+     *
+     * @param str
+     *            要扫描的字符串
+     * @param overlay
+     *            用来覆盖的字符串
+     * @param start
+     *            起始索引
+     * @param end
+     *            结束索引
+     *
+     * @return 被覆盖后的字符串，如果原始字符串为<code>null</code>，则返回<code>null</code>
+     */
+    public static String overlay(String str, String overlay, int start, int end) {
+        if (str == null) {
+            return null;
+        }
+
+        if (overlay == null) {
+            overlay = EMPTY_STRING;
+        }
+
+        int len = str.length();
+
+        if (start < 0) {
+            start = 0;
+        }
+
+        if (start > len) {
+            start = len;
+        }
+
+        if (end < 0) {
+            end = 0;
+        }
+
+        if (end > len) {
+            end = len;
+        }
+
+        if (start > end) {
+            int temp = start;
+
+            start = end;
+            end = temp;
+        }
+
+        return new StringBuffer((len + start) - end + overlay.length() + 1).append(str.substring(0, start)).append(overlay).append(str.substring(end)).toString();
+    }
 }
