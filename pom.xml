@@ -16,6 +16,8 @@
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
         <httpclient.version>4.4.1</httpclient.version>
+        <druid.version>1.0.29</druid.version>
+        <jfinal.version>3.4</jfinal.version>
     </properties>
 
     <dependencies>
@@ -133,6 +135,25 @@
             <version>3.6.1</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.apache.kafka/kafka-clients -->
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>0.10.2.0</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jfinal</groupId>
+            <artifactId>jfinal</artifactId>
+            <version>${jfinal.version}</version>
+        </dependency>
 
     </dependencies>
 

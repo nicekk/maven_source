@@ -1,14 +1,15 @@
 package com.dsj361.dao;
 
 import com.dsj361.common.enums.ModeEnum;
-import com.dsj361.common.lang.StringUtils;
+import com.dsj361.config.Constants;
+import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
+import com.jfinal.plugin.activerecord.dialect.OracleDialect;
+import com.jfinal.plugin.druid.DruidPlugin;
+import com.jfinal.template.source.ClassPathSourceFactory;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Properties;
 
 /**
@@ -21,20 +22,13 @@ public class DbManager {
 
     private static ModeEnum mode;
 
-    public static void init(ModeEnum mode) {
-        DbManager.mode = mode;
-    }
+    private static boolean init = false; // 是否初始化过
 
-    /**
-     * 获取一个连接
-     *
-     * @return
-     */
-    public static Connection getConnection() {
-        if (mode == null) {
-            log.error("mode为null，请调用init()方法设置!");
-            return null;
+    static void init(ModeEnum mode) {
+        if (init) {
+            return;
         }
+        DbManager.mode = mode;
         Properties prop = new Properties();
         String configFileName = "db_" + mode.name().toLowerCase() + ".config";
         InputStream is = DbManager.class.getClassLoader().getResourceAsStream(configFileName);
@@ -42,37 +36,20 @@ public class DbManager {
             prop.load(is);
         } catch (IOException e) {
             log.error("加载配置异常！", e);
-            return null;
+            throw new RuntimeException("加载配置异常！");
         }
         String userName = prop.getProperty("username");
         String password = prop.getProperty("password");
         String url = prop.getProperty("url");
         String driverName = prop.getProperty("driverName");
 
-        Connection connection;
-        try {
-            // 加载驱动
-            Class.forName(driverName);
-            connection = DriverManager.getConnection(url, userName, password);
-        } catch (Exception e) {
-            log.error("获取连接异常!", e);
-            return null;
-        }
-        return connection;
-    }
+        DruidPlugin plugin = new DruidPlugin(url, userName, password, driverName);
+        ActiveRecordPlugin activeRecordPlugin = new ActiveRecordPlugin(Constants.DB_ALIAS_CONFIG, plugin);
+        activeRecordPlugin.getEngine().setSourceFactory(new ClassPathSourceFactory());
+        activeRecordPlugin.setDialect(new OracleDialect());
+        plugin.start();
+        activeRecordPlugin.start();
 
-    /**
-     * 关闭连接
-     *
-     * @param connection
-     */
-    public static void close(Connection connection) {
-        try {
-            if (connection != null) {
-                connection.close();
-            }
-        } catch (SQLException e) {
-            log.error("关闭连接异常", e);
-        }
+        init = true;
     }
 }

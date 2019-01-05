@@ -2,6 +2,7 @@ package com.dsj361.config;
 
 import com.dsj361.common.enums.ModeEnum;
 import com.dsj361.dao.DAOFactory;
+import com.dsj361.model.KafkaConfig;
 
 /**
  * @author wangkai
@@ -14,7 +15,7 @@ public class KafkaConfiguration {
      *
      * @return
      */
-    public static String getServers(ModeEnum mode) {
+    public static KafkaConfig getConfig(ModeEnum mode) {
         return DAOFactory.getKafkaConfigDAO().getServers(mode);
     }
 

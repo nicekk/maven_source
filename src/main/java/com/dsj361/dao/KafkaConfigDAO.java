@@ -1,11 +1,15 @@
 package com.dsj361.dao;
 
 import com.dsj361.common.enums.ModeEnum;
+import com.dsj361.common.lang.ObjectUtils;
+import com.dsj361.config.Constants;
+import com.dsj361.model.KafkaConfig;
+import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.Record;
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * @author wangkai
@@ -13,33 +17,31 @@ import java.sql.ResultSet;
  */
 public class KafkaConfigDAO {
 
-    private static final Logger log = Logger.getLogger(KafkaConfigDAO.class);
-
-    /**
-     * 获取到redis连接
-     *
-     * @param mode
-     * @return
-     */
-    public String getServers(ModeEnum mode) {
+    public static KafkaConfig getServers(ModeEnum mode) {
         DbManager.init(mode);
-        Connection connection = DbManager.getConnection();
-        if (connection == null) {
-            log.error("获取连接异常!");
-            return null;
+
+        KafkaConfig kafkaConfig = new KafkaConfig();
+        String sql1 = "select servers from kafka_config where enabled=1";
+        Record url = Db.use(Constants.DB_ALIAS_CONFIG).findFirst(sql1);
+        String servers = ObjectUtils.toString(url.get("SERVERS"));
+        kafkaConfig.setServers(servers);
+
+        String sql2 = "select name,value from kafka_consumer_config where enabled = 1";
+        List<Record> consumerRecords = Db.use(Constants.DB_ALIAS_CONFIG).find(sql2);
+        Properties consumerProps = new Properties();
+        for (Record record : consumerRecords) {
+            consumerProps.put(ObjectUtils.toString(record.get("NAME")), ObjectUtils.toString(record.get("VALUE")));
         }
-        try {
-            PreparedStatement ps = connection.prepareStatement("select servers from kafka_config where enabled=1");
-            ResultSet rs = ps.executeQuery();
-            String servers = "";
-            while (rs.next()) {
-                servers = rs.getString(1);
-            }
-            DbManager.close(connection);
-            return servers;
-        } catch (Exception e) {
-            log.error("查询数据库异常，", e);
-            return null;
+        kafkaConfig.setConsumerProps(consumerProps);
+
+
+        String sql3 = "select name,value from kafka_producer_config where enabled = 1";
+        List<Record> producerRecords = Db.use(Constants.DB_ALIAS_CONFIG).find(sql3);
+        Properties producerProps = new Properties();
+        for (Record record : producerRecords) {
+            producerProps.put(ObjectUtils.toString(record.get("NAME")), ObjectUtils.toString(record.get("VALUE")));
         }
+        kafkaConfig.setProducerProps(producerProps);
+        return kafkaConfig;
     }
 }
