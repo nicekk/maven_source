@@ -17,4 +17,16 @@ public class DAOFactory {
         return new DatabaseUrlConfigDAO();
     }
 
+    public static RedisConfigDAO getRedisConfigDAO() {
+        return new RedisConfigDAO();
+    }
+
+    public static ZookeeperConfigDAO getZookeeperConfigDAO() {
+        return new ZookeeperConfigDAO();
+    }
+
+    public static KafkaConfigDAO getKafkaConfigDAO() {
+        return new KafkaConfigDAO();
+    }
+
 }
