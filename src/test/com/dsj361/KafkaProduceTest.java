@@ -1,7 +1,7 @@
 package com.dsj361;
 
 import com.dsj361.common.enums.ModeEnum;
-import com.dsj361.kafka.KafkaClient;
+import com.dsj361.client.kafka.KafkaClient;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.junit.Test;
