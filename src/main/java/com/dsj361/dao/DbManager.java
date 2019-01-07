@@ -46,8 +46,6 @@ public class DbManager {
         DruidPlugin plugin = new DruidPlugin(url, userName, password, driverName);
         ActiveRecordPlugin activeRecordPlugin = new ActiveRecordPlugin(Constants.DB_ALIAS_CONFIG, plugin);
         activeRecordPlugin.getEngine().setSourceFactory(new ClassPathSourceFactory());
-        // 加载指定的sql文件
-        activeRecordPlugin.addSqlTemplate("sql/sql_" + mode + ".sql");
         activeRecordPlugin.setDialect(new OracleDialect());
         plugin.start();
         activeRecordPlugin.start();
