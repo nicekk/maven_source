@@ -371,6 +371,27 @@ public class DateUtils {
         return differDays;
     }
 
+    /**
+     * 取得两个日期间隔秒数（日期1-日期2）
+     *
+     * @param one
+     *            日期1
+     * @param two
+     *            日期2
+     *
+     * @return 间隔秒数
+     */
+    public static long getDiffSeconds(Date one, Date two) {
+        Calendar sysDate = new GregorianCalendar();
+
+        sysDate.setTime(one);
+
+        Calendar failDate = new GregorianCalendar();
+
+        failDate.setTime(two);
+        return (sysDate.getTimeInMillis() - failDate.getTimeInMillis()) / 1000;
+    }
+
     public static void main(String[] args) {
         System.out.println(getDateyyyyMMddHHmmString(new Date()));
     }
