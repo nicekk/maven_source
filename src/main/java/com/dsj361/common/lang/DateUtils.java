@@ -19,6 +19,7 @@ public class DateUtils {
     public final static String newFormat = "yyyy-MM-dd HH:mm:ss";
     public final static String newFormat2 = "yyyy-M-d H:m:s";
     public static final String shortFormat = "yyyyMMdd";
+    public final static String yyyyMMddHHmm = "yyyyMMddHHmm";
     public final static String shortDateFormat = "MM-dd";
     public final static String yyyyMMddHH = "yyyyMMddHH";
     public final static String webFormat = "yyyy-MM-dd";
@@ -143,6 +144,16 @@ public class DateUtils {
         return df.format(date);
     }
 
+    /**
+     * @param date
+     * @return
+     */
+    public static String getDateyyyyMMddHHmmString(Date date) {
+        DateFormat df = getNewDateFormat(yyyyMMddHHmm);
+
+        return df.format(date);
+    }
+
     public static Date parseDate(String sDate, String dateFormatString) throws ParseException {
         DateFormat dateFormat = new SimpleDateFormat(dateFormatString);
         if ((sDate == null) || (sDate.length() < dateFormatString.length())) {
@@ -150,6 +161,18 @@ public class DateUtils {
         }
 
         return dateFormat.parse(sDate);
+    }
+
+    public static Date parseDateNoTime(String sDate) {
+        if (sDate == null) {
+            return null;
+        }
+        DateFormat dateFormat = new SimpleDateFormat(shortFormat);
+        try {
+            return dateFormat.parse(sDate);
+        } catch (ParseException ex) {
+            return null;
+        }
     }
 
     /**
@@ -305,5 +328,50 @@ public class DateUtils {
      */
     public static TIMESTAMP getCurrentOracleTimestamp() {
         return new oracle.sql.TIMESTAMP(new Timestamp(new Date().getTime()));
+    }
+
+    /**
+     * 计算相差的天数
+     *
+     * @param one
+     * @param two
+     * @return �������
+     */
+    public static long getDiffDays(Date one, Date two) {
+        Calendar sysDate = new GregorianCalendar();
+
+        sysDate.setTime(one);
+
+        Calendar failDate = new GregorianCalendar();
+
+        failDate.setTime(two);
+        return (sysDate.getTimeInMillis() - failDate.getTimeInMillis()) / (24 * 60 * 60 * 1000);
+    }
+
+    /**
+     * 计算相差的天数
+     *
+     * @param one
+     * @param two
+     * @param leftHoursToDay
+     * @return
+     */
+    public static long getDiffDays(Date one, Date two, boolean leftHoursToDay) {
+        Calendar sysDate = new GregorianCalendar();
+
+        sysDate.setTime(one);
+
+        Calendar failDate = new GregorianCalendar();
+
+        failDate.setTime(two);
+        long differDays = (sysDate.getTimeInMillis() - failDate.getTimeInMillis()) / (24 * 60 * 60 * 1000);
+        if (leftHoursToDay && (sysDate.getTimeInMillis() - failDate.getTimeInMillis()) % (24 * 60 * 60 * 1000) > 0) {
+            differDays += 1;
+        }
+        return differDays;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getDateyyyyMMddHHmmString(new Date()));
     }
 }

@@ -33,7 +33,7 @@ public class KafkaClient<K, V> {
      * @param topicName
      * @return
      */
-    public KafkaConsumer<K, V> getConsumer(ModeEnum mode, String topicName, String keyDeserializer, String valueDeserializer) {
+    public synchronized KafkaConsumer<K, V> getConsumer(ModeEnum mode, String topicName, String keyDeserializer, String valueDeserializer) {
         KafkaConsumer<K, V> consumer = topicConsumerMap.get(topicName);
         if (consumer == null) {
             Properties prop = new Properties();
@@ -56,7 +56,7 @@ public class KafkaClient<K, V> {
      * @param topicName
      * @return
      */
-    public KafkaConsumer<K, V> getConsumer(ModeEnum modeEnum, String topicName) {
+    public synchronized KafkaConsumer<K, V> getConsumer(ModeEnum modeEnum, String topicName) {
         return getConsumer(modeEnum, topicName,
                 "org.apache.kafka.common.serialization.StringDeserializer",
                 "org.apache.kafka.common.serialization.StringDeserializer");
@@ -71,7 +71,7 @@ public class KafkaClient<K, V> {
      * @param valueSerializer
      * @return
      */
-    public KafkaProducer<K, V> getProducer(ModeEnum modeEnum, String topicName, String keySerializer, String valueSerializer) {
+    public synchronized KafkaProducer<K, V> getProducer(ModeEnum modeEnum, String topicName, String keySerializer, String valueSerializer) {
         KafkaProducer<K, V> producer = topicProducerMap.get(topicName);
         if (producer == null) {
             Properties prop = new Properties();
@@ -95,7 +95,7 @@ public class KafkaClient<K, V> {
      * @param topicName
      * @return
      */
-    public KafkaProducer<K, V> getProducer(ModeEnum modeEnum, String topicName) {
+    public synchronized KafkaProducer<K, V> getProducer(ModeEnum modeEnum, String topicName) {
         return getProducer(modeEnum, topicName,
                 "org.apache.kafka.common.serialization.StringSerializer",
                 "org.apache.kafka.common.serialization.StringSerializer");

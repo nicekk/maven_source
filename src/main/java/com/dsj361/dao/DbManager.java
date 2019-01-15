@@ -3,6 +3,7 @@ package com.dsj361.dao;
 import com.dsj361.common.enums.ModeEnum;
 import com.dsj361.config.Constants;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.dialect.OracleDialect;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.source.ClassPathSourceFactory;
