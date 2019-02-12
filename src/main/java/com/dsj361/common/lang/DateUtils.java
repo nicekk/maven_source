@@ -1,5 +1,6 @@
 package com.dsj361.common.lang;
 
+import com.sun.tools.corba.se.idl.constExpr.Times;
 import oracle.sql.TIMESTAMP;
 
 import java.sql.Timestamp;
@@ -331,6 +332,16 @@ public class DateUtils {
     }
 
     /**
+     * 根据日期得到oracle的时间戳
+     *
+     * @param date
+     * @return
+     */
+    public static TIMESTAMP getOracleTimestampByDate(Date date) {
+        return new oracle.sql.TIMESTAMP(new Timestamp(date.getTime()));
+    }
+
+    /**
      * 计算相差的天数
      *
      * @param one
@@ -374,11 +385,8 @@ public class DateUtils {
     /**
      * 取得两个日期间隔秒数（日期1-日期2）
      *
-     * @param one
-     *            日期1
-     * @param two
-     *            日期2
-     *
+     * @param one 日期1
+     * @param two 日期2
      * @return 间隔秒数
      */
     public static long getDiffSeconds(Date one, Date two) {
