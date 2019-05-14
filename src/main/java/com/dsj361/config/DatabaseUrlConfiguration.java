@@ -56,4 +56,15 @@ public class DatabaseUrlConfiguration {
     public static List<DatabaseUrl> getDatabaseUrlsByType(ModeEnum mode, DatabaseTypeEnum type) {
         return DAOFactory.getDatabaseUrlConfigDAO().getDatabaseUrlByType(mode, type);
     }
+
+    /**
+     * 根据数据库类型和用处获取数据库连接
+     * @param mode
+     * @param type
+     * @param usage
+     * @return
+     */
+    public static List<DatabaseUrl> getDatabaseUrlsByTypeAndUsage(ModeEnum mode, DatabaseTypeEnum type, String usage) {
+        return DAOFactory.getDatabaseUrlConfigDAO().getDatabaseUrlByTypeAndUsage(mode, type, usage);
+    }
 }

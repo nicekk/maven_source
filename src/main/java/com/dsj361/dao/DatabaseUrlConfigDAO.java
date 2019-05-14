@@ -78,6 +78,18 @@ public class DatabaseUrlConfigDAO {
         return converts(Db.use(Constants.DB_ALIAS_CONFIG).find(sql));
     }
 
+    /**
+     * 根据一组别名查找
+     *
+     * @param mode
+     * @return
+     */
+    public List<DatabaseUrl> getDatabaseUrlByTypeAndUsage(ModeEnum mode, DatabaseTypeEnum type,String usage) {
+        DbManager.init(mode);
+        String sql = "select * from database_url_config where type = '" + type.name().toLowerCase() + "' and usage = '" + usage + "' and enabled=1";
+        return converts(Db.use(Constants.DB_ALIAS_CONFIG).find(sql));
+    }
+
     private static DatabaseUrl convert(Record record) {
         DatabaseUrl databaseUrl = new DatabaseUrl();
         databaseUrl.setAlias(ObjectUtils.toString(record.get("ALIAS")));
